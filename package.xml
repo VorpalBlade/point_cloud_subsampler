@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>point_cloud_subsampler</name>
+  <version>0.0.1</version>
+  <description>Subsamples a point cloud to only include information about obstacles and free space, represented as two different z-levels</description>
+  <maintainer email="VorpalBlade@users.noreply.github.com">Arvid Norlander</maintainer>
+  <author email="VorpalBlade@users.noreply.github.com">Arvid Norlander</author>
+  <license>GPLv3</license>
+  <!-- <url type="website">http://wiki.ros.org/point_cloud_subsampler</url> -->
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>dynamic_reconfigure</build_depend>
+  <build_depend>nodelet</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_export_depend>sensor_msgs</build_export_depend>
+  <exec_depend>dynamic_reconfigure</exec_depend>
+  <exec_depend>nodelet</exec_depend>
+  <exec_depend>roscpp</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <depend>ros_spatial_utils</depend>
+  <build_depend>tf2</build_depend>
+  <exec_depend>tf2</exec_depend>
+  <build_depend>tf2_ros</build_depend>
+  <exec_depend>tf2_ros</exec_depend>
+  <build_depend>tf2_msgs</build_depend>
+  <exec_depend>tf2_msgs</exec_depend>
+  <build_depend>tf2_sensor_msgs</build_depend>
+  <exec_depend>tf2_sensor_msgs</exec_depend>
+
+  <export>
+    <nodelet plugin="${prefix}/nodelets.xml" />
+  </export>
+</package>

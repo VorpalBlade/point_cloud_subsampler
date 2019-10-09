@@ -1,0 +1,9 @@
+<library path="libpoint_cloud_subsampler">
+  <class name="point_cloud_subsampler/PointCloudSubsamplerNodelet"
+         type="point_cloud_subsampler::PointCloudSubsamplerNodelet"
+         base_class_type="nodelet::Nodelet">
+    <description>
+      Subsamples a point cloud to only include information about obstacles and free space, represented as two different z-levels
+    </description>
+  </class>
+</library>
