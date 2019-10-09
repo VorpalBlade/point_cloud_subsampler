@@ -10,7 +10,7 @@ obstacles.
 This node will also remap into the target TF frame (**before** processing). This
 is useful if your point cloud TF frame is in a weird orientation.
 
-[[doc/rviz_subsampler.png|alt=Example of subsampling a pointcloud]]
+![Example of subsampling a pointcloud](doc/rviz_subsampler.png)
 
 ## Topic
 
