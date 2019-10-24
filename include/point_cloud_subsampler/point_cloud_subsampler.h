@@ -17,19 +17,12 @@
 #include <boost/thread/lock_guard.hpp>
 #include <boost/thread/mutex.hpp>
 #include <dynamic_reconfigure/server.h>
-#include <message_filters/subscriber.h>
 #include <point_cloud_subsampler/PointCloudSubSamplerConfig.h>
 #include <ros/ros.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <tf2_ros/buffer.h>
 #include <tf2_ros/transform_listener.h>
 #include <tf2_sensor_msgs/tf2_sensor_msgs.h>
-
-// Warnings inside template instantiation
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#include <tf2_ros/message_filter.h>
-#pragma GCC diagnostic pop
 
 namespace point_cloud_subsampler
 {
@@ -55,17 +48,7 @@ private:
 
   //! @name Subscribers
   //! @{
-
-  //! Type of point cloud subscriber
-  using PcSubscriber = message_filters::Subscriber<sensor_msgs::PointCloud2>;
-  //! Type of point cloud filter
-  using PcFilter = tf2_ros::MessageFilter<sensor_msgs::PointCloud2>;
-
-  //! Special subscription used by @a laser_filter to sync the messages with TF
-  //! transforms
-  PcSubscriber pc_sub_;
-  //! Message filter for point cloud.
-  std::shared_ptr<PcFilter> pc_filter_;
+  ros::Subscriber pc_sub_;
   //! @}
 
   PointCloudSubSamplerConfig cfg_;

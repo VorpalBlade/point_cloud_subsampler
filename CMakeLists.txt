@@ -10,13 +10,13 @@ set(${PROJECT_NAME}_catkin_deps_private
     dynamic_reconfigure
     nodelet
     ros_spatial_utils
+    roscpp
     tf2
     tf2_ros
     tf2_sensor_msgs
 )
 
 set(${PROJECT_NAME}_catkin_deps_public
-    roscpp
     sensor_msgs
 )
 

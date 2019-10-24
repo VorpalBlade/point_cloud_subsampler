@@ -72,14 +72,11 @@ void PointCloudSubSampler::connectCb()
   boost::lock_guard<boost::mutex> lock(connect_mutex_);
   if (!pub_.getNumSubscribers())
   {
-    pc_sub_.unsubscribe();
-    pc_filter_.reset();
+    pc_sub_.shutdown();
   }
   else
   {
-    pc_sub_.subscribe(nh_, "points", 10);
-    pc_filter_.reset(new PcFilter(pc_sub_, tf_buffer_, cfg_.target_frame, 100, nh_));
-    pc_filter_->registerCallback(&PointCloudSubSampler::recvCallback, this);
+    pc_sub_ = nh_.subscribe("points", 10, &PointCloudSubSampler::recvCallback, this);
   }
 }
 
@@ -113,14 +110,15 @@ void PointCloudSubSampler::recvCallback(const sensor_msgs::PointCloud2ConstPtr& 
   sensor_msgs::PointCloud2 transformed;
   try
   {
-    transformStamped = tf_buffer_.lookupTransform(cfg_.target_frame, msg->header.frame_id, ros::Time(0));
-    tf2::doTransform(*msg, transformed, transformStamped);
+    transformStamped = tf_buffer_.lookupTransform(cfg_.target_frame, msg->header.frame_id, msg->header.stamp,
+                                                  ros::Duration(cfg_.tf_timeout));
   }
   catch (tf2::TransformException& ex)
   {
     ROS_WARN("%s", ex.what());
     return;
   }
+  tf2::doTransform(*msg, transformed, transformStamped);
 
   // Load structure of PointCloud2
   auto offsets = get_offsets(transformed);
@@ -188,14 +186,9 @@ void PointCloudSubSampler::recvCallback(const sensor_msgs::PointCloud2ConstPtr& 
   pub_.publish(output_msg);
 }
 
-void PointCloudSubSampler::reconfig(PointCloudSubSamplerConfig& config, uint32_t level)
+void PointCloudSubSampler::reconfig(PointCloudSubSamplerConfig& config, uint32_t)
 {
   cfg_ = config;
-  // Check if we need to update target frame if connected
-  if (level == 1 && pc_filter_)
-  {
-    pc_filter_->setTargetFrame(cfg_.target_frame);
-  }
 }
 
 PointCloudSubSampler::Offsets PointCloudSubSampler::get_offsets(const sensor_msgs::PointCloud2& msg)
