@@ -31,4 +31,5 @@ Dynamic reconfigure is supported.
 * `obstacle_z` (`double`, default: 1.0) - Published z for obstacles (m)
 * `resolution` (`double`, default: 0.0) - Distance between output points (m)
 * `max_dist` (`double`, default: 4.0) - Maximum Euclidean distance from sensor in the plane (m)
+* `tf_timeout` (`double`, default 0.1) - Timeout for waiting for TF transform (s)
 * `target_frame` (`string`, default: "base_footprint") - Target TF frame
