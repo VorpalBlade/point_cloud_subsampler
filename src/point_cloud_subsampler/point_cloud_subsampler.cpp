@@ -21,6 +21,8 @@
 #include <sensor_msgs/point_cloud2_iterator.h>
 #include <ros_spatial_utils/scaled_map.h>
 #include <boost/functional/hash.hpp>
+#include <geometry_msgs/PointStamped.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 #include <tf2/convert.h>
 
 namespace std
@@ -85,7 +87,9 @@ void PointCloudSubSampler::connectCb()
   const float z = z_expr;                                                                                              \
   const float x = x_expr;                                                                                              \
   const float y = y_expr;                                                                                              \
-  auto range = sqrtf(x * x + y * y);                                                                                   \
+  const float xDist = x - originX;                                                                                     \
+  const float yDist = y - originY;                                                                                     \
+  auto range = sqrtf(xDist * xDist + yDist * yDist);                                                                   \
   if (range > cfg_.max_dist)                                                                                           \
   {                                                                                                                    \
     continue;                                                                                                          \
@@ -119,6 +123,18 @@ void PointCloudSubSampler::recvCallback(const sensor_msgs::PointCloud2ConstPtr& 
     return;
   }
   tf2::doTransform(*msg, transformed, transformStamped);
+
+  // Compute where the old origin was. This is needed to computing distance in point cloud from sensor.
+  float originX, originY;
+  {
+    geometry_msgs::PointStamped sensorOrigin;
+    geometry_msgs::PointStamped transformedSensorOrigin;
+    sensorOrigin.header.stamp = msg->header.stamp;
+    sensorOrigin.header.frame_id = msg->header.frame_id;
+    tf2::doTransform(sensorOrigin, transformedSensorOrigin, transformStamped);
+    originX = static_cast<float>(transformedSensorOrigin.point.x);
+    originY = static_cast<float>(transformedSensorOrigin.point.y);
+  }
 
   // Load structure of PointCloud2
   auto offsets = get_offsets(transformed);
