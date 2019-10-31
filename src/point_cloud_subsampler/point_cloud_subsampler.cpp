@@ -103,7 +103,7 @@ void PointCloudSubSampler::connectCb()
     output_it = result.first;                                                                                          \
   }                                                                                                                    \
                                                                                                                        \
-  if (z > cfg_.min_z && z < cfg_.max_z)                                                                                \
+  if (z > (cfg_.min_z + cfg_.min_z_slope * range) && z < cfg_.max_z)                                                   \
   {                                                                                                                    \
     output_it->second.point_in_obstacle = true;                                                                        \
   }

@@ -26,6 +26,8 @@ The node only does processing if it has subscribers.
 Dynamic reconfigure is supported.
 
 * `min_z` (`double`, default: 0.0) - Minimum z for obstacles (m)
+* `min_z_slope` (`double`, default: 0.0) - Slope coefficient for increasing
+  `min_z` as a function of distance from the sensor
 * `max_z` (`double`, default: 2.0) - Maximum z for obstacles (m)
 * `free_z` (`double`, default: 0.0) - Published z for free space (m)
 * `obstacle_z` (`double`, default: 1.0) - Published z for obstacles (m)
@@ -33,3 +35,9 @@ Dynamic reconfigure is supported.
 * `max_dist` (`double`, default: 4.0) - Maximum Euclidean distance from sensor in the plane (m)
 * `tf_timeout` (`double`, default: 0.1) - Timeout for waiting for TF transform (s)
 * `target_frame` (`string`, default: "base_footprint") - Target TF frame
+
+The slope coefficient might need some further explanation: Basically the range
+is multiplied with this value and added to min_z. This allows increasing the
+minimum height of obstacles the further away from the sensor to deal with errors
+that are range-dependent (such as noise from a stereo camera, as well as
+imprecise tilt alignment).
