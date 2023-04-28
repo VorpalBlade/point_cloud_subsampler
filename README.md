@@ -1,5 +1,11 @@
 # Point cloud subsampler
 
+**NOTE**: I no longer work in the field of robotics, this is not maintained. But
+hopefully the ideas and techniques presented here might be of use to you. Or the
+software itself might even still work!
+
+---
+
 Subsample a point cloud to lower density. Intended usage is as input to
 a costmap or other obstacle avoidance system.
 
